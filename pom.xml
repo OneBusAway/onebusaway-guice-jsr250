@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>onebusaway</artifactId>
+    <groupId>org.onebusaway</groupId>
+    <version>1.1.4</version>
+  </parent>
+  <artifactId>onebusaway-guice-jsr250</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>onebusaway-guice-jsr250</name>
+  <description>A simple implementation of the JSR250 module for Guice.</description>
+
+  <properties>
+    <!-- We don't want to release these to the main Maven repo, so we deploy to the OBA repo by default -->
+    <distribution_id>nexus.onebusaway.org-releases</distribution_id>
+    <distribution_url>http://nexus.onebusaway.org/content/repositories/releases/</distribution_url>
+    <snapshot_distribution_id>nexus.onebusaway.org-snapshots</snapshot_distribution_id>
+    <snapshot_distribution_url>http://nexus.onebusaway.org/content/repositories/snapshots/</snapshot_distribution_url>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>public.onebusaway.org</id>
+      <url>http://nexus.onebusaway.org/content/groups/public/</url>
+    </repository>
+  </repositories>
+
+  <scm>
+    <connection>scm:svn:http://onebusaway.googlecode.com/svn/modules/onebusaway-guice-jsr250/trunk</connection>
+    <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/modules/onebusaway-guice-jsr250/trunk</developerConnection>
+    <url>http://code.google.com/p/onebusaway/source/browse/#svn/modules/onebusaway-guice-jsr250/trunk</url>
+  </scm>
+
+  <distributionManagement>
+    <!-- Even though we specify this in the parent pom, we need to specify it here to have full control over the url -->
+    <site>
+      <id>${site_id}</id>
+      <url>${site_url}</url>
+    </site>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.10.b1</version>
+        <configuration>
+          <header>src/license/header.txt</header>
+          <excludes>
+            <exclude>src/site/**</exclude>
+            <exclude>LICENSE.txt</exclude>
+          </excludes>
+          <strictCheck>true</strictCheck>
+          <headerSections>
+            <headerSection>
+              <key>COPYRIGHT_SECTION</key>
+              <defaultValue>Copyright (C) 2011 Brian Ferris &lt;bdferris@onebusaway.org&gt;</defaultValue>
+              <ensureMatch>Copyright \(C\) \d{4} .+</ensureMatch>
+            </headerSection>
+          </headerSections>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
