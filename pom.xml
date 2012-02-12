@@ -3,20 +3,13 @@
   <parent>
     <artifactId>onebusaway</artifactId>
     <groupId>org.onebusaway</groupId>
-    <version>1.1.4</version>
+    <version>1.1.6</version>
   </parent>
   <artifactId>onebusaway-guice-jsr250</artifactId>
   <version>1.0.1-SNAPSHOT</version>
   <name>onebusaway-guice-jsr250</name>
   <description>A simple implementation of the JSR250 module for Guice.</description>
-
-  <properties>
-    <!-- We don't want to release these to the main Maven repo, so we deploy to the OBA repo by default -->
-    <distribution_id>nexus.onebusaway.org-releases</distribution_id>
-    <distribution_url>http://nexus.onebusaway.org/content/repositories/releases/</distribution_url>
-    <snapshot_distribution_id>nexus.onebusaway.org-snapshots</snapshot_distribution_id>
-    <snapshot_distribution_url>http://nexus.onebusaway.org/content/repositories/snapshots/</snapshot_distribution_url>
-  </properties>
+  <url>https://github.com/OneBusAway/onebusaway-guice-jsr250/wiki/</url>
 
   <repositories>
     <repository>
@@ -26,10 +19,15 @@
   </repositories>
 
   <scm>
-    <connection>scm:svn:http://onebusaway.googlecode.com/svn/modules/onebusaway-guice-jsr250/trunk</connection>
-    <developerConnection>scm:svn:https://onebusaway.googlecode.com/svn/modules/onebusaway-guice-jsr250/trunk</developerConnection>
-    <url>http://code.google.com/p/onebusaway/source/browse/#svn/modules/onebusaway-guice-jsr250/trunk</url>
+    <connection>scm:git:http://github.com/OneBusAway/onebusaway-guice-jsr250.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/OneBusAway/onebusaway-guice-jsr250.git</developerConnection>
+    <url>http://github.com/OneBusAway/onebusaway-guice-jsr250</url>
   </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/OneBusAway/onebusaway-collections/issues</url>
+  </issueManagement>
 
   <distributionManagement>
     <!-- Even though we specify this in the parent pom, we need to specify it here to have full control over the url -->
