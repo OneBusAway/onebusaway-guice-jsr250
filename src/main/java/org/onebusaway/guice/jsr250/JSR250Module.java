@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 Brian Ferris <bdferris@onebusaway.org>
+ * Copyright (C) 2012 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +44,7 @@ import com.google.inject.spi.TypeListener;
 public class JSR250Module extends AbstractModule {
 
   private static final Logger _log = LoggerFactory.getLogger(JSR250Module.class);
-  
+
   public static void addModuleAndDependencies(Set<Module> modules) {
     modules.add(new JSR250Module());
   }
@@ -117,6 +118,10 @@ public class JSR250Module extends AbstractModule {
       this.method = method;
     }
 
+    public synchronized void reset() {
+      hasBeenRun = false;
+    }
+
     public void execute() {
 
       synchronized (this) {
@@ -129,8 +134,14 @@ public class JSR250Module extends AbstractModule {
         method.setAccessible(true);
         method.invoke(object);
       } catch (Throwable ex) {
-        _log.warn("error invoking @PreDestroy method " + method + " on target "
-            + object, ex);
+        try {
+          _log.warn("error invoking method " + method + " on target " + object,
+              ex);
+        } catch (Exception ex2) {
+          System.err.println("error invoking method " + method + " on target "
+              + object);
+          ex.printStackTrace();
+        }
       }
     }
 
@@ -178,8 +189,16 @@ public class JSR250Module extends AbstractModule {
         return;
       _started = true;
 
-      for (ObjectAndMethod target : _postConstructActions)
+      for (ObjectAndMethod target : _postConstructActions) {
         target.execute();
+      }
+
+      /**
+       * Reset pre-destory methods, making it possible to call stop() again.
+       */
+      for (ObjectAndMethod target : _preDestroyActions) {
+        target.reset();
+      }
     }
 
     @Override
@@ -195,6 +214,13 @@ public class JSR250Module extends AbstractModule {
       for (int i = _preDestroyActions.size() - 1; i >= 0; --i) {
         ObjectAndMethod target = _preDestroyActions.get(i);
         target.execute();
+      }
+
+      /**
+       * Reset post-construct methods, making it possible to call start() again.
+       */
+      for (ObjectAndMethod target : _postConstructActions) {
+        target.reset();
       }
     }
   }
