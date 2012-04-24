@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011 Brian Ferris <bdferris@onebusaway.org>
+ * Copyright (C) 2012 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,27 +42,34 @@ public class JSR250ModuleTest {
 
     ServiceA serviceA = injector.getInstance(ServiceA.class);
     ServiceB serviceB = injector.getInstance(ServiceB.class);
+    ServiceC serviceC = injector.getInstance(ServiceC.class);
 
     LifecycleService lifecycle = injector.getInstance(LifecycleService.class);
 
     lifecycle.start();
 
     assertTrue(serviceA.getConstructionCount() < serviceB.getConstructionCount());
-    assertTrue(serviceB.getConstructionCount() < serviceA.getStartCount());
+    assertTrue(serviceB.getConstructionCount() < serviceC.getConstructionCount());
+    assertTrue(serviceC.getConstructionCount() < serviceA.getStartCount());
     assertTrue(serviceA.getStartCount() < serviceB.getStartCount());
+    assertTrue(serviceB.getStartCount() < serviceC.getStartCount());
+
+    assertEquals(6, serviceC.getStartCount());
 
     /**
      * @PreDestory hooks should not have been run yet
      */
     assertEquals(0, serviceB.getStopCount());
     assertEquals(0, serviceB.getStopCount());
+    assertEquals(0, serviceC.getStopCount());
 
     lifecycle.stop();
 
     /**
      * @PreDestroy should be applied in reverse order of @PostConstruct
      */
-    assertTrue(serviceB.getStartCount() < serviceB.getStopCount());
+    assertTrue(serviceC.getStartCount() < serviceC.getStopCount());
+    assertTrue(serviceC.getStopCount() < serviceB.getStopCount());
     assertTrue(serviceB.getStopCount() < serviceA.getStopCount());
   }
 
@@ -78,7 +86,7 @@ public class JSR250ModuleTest {
      */
     ServiceB serviceB = injector.getInstance(ServiceB.class);
     ServiceA serviceA = injector.getInstance(ServiceA.class);
-    
+
     LifecycleService lifecycle = injector.getInstance(LifecycleService.class);
 
     lifecycle.start();
@@ -176,12 +184,28 @@ public class JSR250ModuleTest {
     }
   }
 
+  @Singleton
+  public static class ServiceC extends ServiceB {
+
+    @Inject
+    public ServiceC(AtomicInteger counter, ServiceA serviceA) {
+      super(counter, serviceA);
+    }
+
+    @Override
+    public void start() {
+      super.start();
+    }
+
+  }
+
   private static class ServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
       bind(ServiceA.class);
       bind(ServiceB.class);
+      bind(ServiceC.class);
       // We want a singleton here, so we bind a specific instance
       bind(AtomicInteger.class).toInstance(new AtomicInteger());
     }

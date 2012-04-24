@@ -62,19 +62,23 @@ public class JSR250Module extends AbstractModule {
           TypeEncounter<I> encounter) {
 
         Class<? super I> type = injectableType.getRawType();
-        Method[] methods = type.getDeclaredMethods();
+        while (type != null) {
+          Method[] methods = type.getDeclaredMethods();
 
-        for (final Method method : methods) {
+          for (final Method method : methods) {
 
-          PostConstruct postConstruct = method.getAnnotation(PostConstruct.class);
-          if (postConstruct != null)
-            encounter.register(new RegisterMethodCallback<I>(
-                postConstructActions, method));
+            PostConstruct postConstruct = method.getAnnotation(PostConstruct.class);
+            if (postConstruct != null)
+              encounter.register(new RegisterMethodCallback<I>(
+                  postConstructActions, method));
 
-          PreDestroy preDestory = method.getAnnotation(PreDestroy.class);
-          if (preDestory != null)
-            encounter.register(new RegisterMethodCallback<I>(preDestroyActions,
-                method));
+            PreDestroy preDestory = method.getAnnotation(PreDestroy.class);
+            if (preDestory != null)
+              encounter.register(new RegisterMethodCallback<I>(
+                  preDestroyActions, method));
+          }
+          
+          type = type.getSuperclass();
         }
       }
     });
