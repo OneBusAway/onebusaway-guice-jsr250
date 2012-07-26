@@ -1,4 +1,4 @@
 onebusaway-guice-jsr250
 
-  Project documentation for the `onebusaway-guice-jsr250`, which provides simple support for the @PostConstruct and
-@PreDestory annotations defined in {{{http://jcp.org/en/jsr/detail?id=250}JSR-250}}. 
+  Project documentation for the <<<onebusaway-guice-jsr250>>>, which provides simple support for the @PostConstruct and
+@PreDestroy annotations defined in {{{http://jcp.org/en/jsr/detail?id=250}JSR-250}}. 
