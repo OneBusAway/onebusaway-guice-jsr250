@@ -1,0 +1,32 @@
+Release Notes
+
+* ${currentVersion}
+
+  * Full Documentation: {{${site_base_url}/onebusaway-guice-jsr250/${currentVersion}/}}
+  
+* 1.0.2
+
+  * Add support for @PostConstruct and @PreDestory methods in parent classes.
+  
+  * Fix issue where a thrown exception in a shutdown hook was not loggable with SLF4J because the classes were no
+    longer loaded.
+
+  * Allow start/stop to be called repeatedly.
+
+  * Full Documentation: {{${site_base_url}/onebusaway-guice-jsr250/1.0.2/}}
+
+* 1.0.1
+
+  * Bump to onebusaway-1.1.7 and refactor license header checking.
+
+  * Refactor how the Guice module and its dependencies are collected.
+  
+  * Migrate to GitHub.
+
+  * Full Documentation: {{${site_base_url}/onebusaway-guice-jsr250/1.0.1/}}
+  
+* 1.0.0
+
+  * Initial release
+
+  * Full Documentation: {{${site_base_url}/onebusaway-guice-jsr250/1.0.0/}}
